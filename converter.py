@@ -20,9 +20,8 @@ def convert(chart):
             note = {}
             note["type"] = "block"
             # calculate approximate location (likely inaccurate if bpm changes)
-            section = getSection(val["time"])
             # beatvalue = val["time"] / section["beatLength"]
-            beatvalue = convert_ms_to_beats(val["time"], transitions)
+            beatvalue = convert_ms_to_beats(val["time"], transitions, chart)
             note["time"] = beatvalue
             angle = val["x"] / 128
             note["angle"] = (angle * angle_multiplier) + add_angle + (random.randint(-taiko_multiplier, taiko_multiplier) if val["tap"] else 0)
@@ -32,14 +31,13 @@ def convert(chart):
         if val["type"] == 128:
             note = {}
             note["type"] = "hold"
-            section = getSection(val["time"])
             # beatvalue = val["time"] / section["beatLength"]
             # note["time"] = beatvalue
             # beatvalue2 = (val["endTime"] / section["beatLength"]) - beatvalue
             # note["duration"] = beatvalue2
-            beatvalue = convert_ms_to_beats(val["time"], transitions)
+            beatvalue = convert_ms_to_beats(val["time"], transitions, chart)
             note["time"] = beatvalue
-            beatvalue2 = abs(convert_ms_to_beats(val["endTime"], transitions) - beatvalue)
+            beatvalue2 = abs(convert_ms_to_beats(val["endTime"], transitions, chart) - beatvalue)
             note["duration"] = beatvalue2
             angle = val["x"] / 128
             note["angle"] = (angle * angle_multiplier) + add_angle

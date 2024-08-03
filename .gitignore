@@ -1,6 +1,7 @@
 # left-overs from testing
 /output
 **.osu
+/__pycache__
 
 # vs code
 /.vscode

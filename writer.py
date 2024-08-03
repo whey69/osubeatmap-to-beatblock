@@ -32,7 +32,7 @@ def write(bchart, chart):
             #     continue
             event = {}
             event["type"] = "setBPM"
-            event["time"] = convert_ms_to_beats(i["time"], transitions)
+            event["time"] = convert_ms_to_beats(i["time"], transitions, chart)
             event["angle"] = 90
             event["bpm"] = i["bpm"]
             level["events"].append(event)
@@ -41,7 +41,7 @@ def write(bchart, chart):
         for c, i in enumerate(chart["approaches"]):
             event = {}
             event["type"] = "ease"
-            event["time"] = convert_ms_to_beats(i["time"], transitions)
+            event["time"] = convert_ms_to_beats(i["time"], transitions, chart)
             event["angle"] = 270
             event["value"] = i["multiplier"]
             event["var"] = "scrollSpeed"
@@ -49,7 +49,7 @@ def write(bchart, chart):
         
         # end the level
         event = {
-            "time": convert_ms_to_beats(chart["hitobjects"][-1]["time"], transitions) + 1,
+            "time": convert_ms_to_beats(chart["hitobjects"][-1]["time"], transitions, chart) + 1,
             "type": "showResults",
             "angle": 0
         }

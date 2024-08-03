@@ -1,14 +1,14 @@
 true = True
 false = False
 
-def getSection(self, time):
-    b = self.chart["timing"][0]
-    for i in self.chart["timing"]:
+def getSection(time, chart):
+    b = chart["timing"][0]
+    for i in chart["timing"]:
         if i["time"] <= time and i["time"] >= b["time"]:
             b = i
     return b
 
-def convert_ms_to_beats(self, ms, transitions):
+def convert_ms_to_beats(ms, transitions, chart):
     total_beats = 0
     reached_end = false
 
@@ -23,8 +23,8 @@ def convert_ms_to_beats(self, ms, transitions):
                 reached_end = true
         # there are no more timing points left, use the end note as a timing
         if c >= len(transitions) - 1:
-            t2 = self.chart["hitobjects"][-1]["time"]
-            if self.chart["hitobjects"][-1]["time"] > ms:
+            t2 = chart["hitobjects"][-1]["time"]
+            if chart["hitobjects"][-1]["time"] > ms:
                 t2 = ms
         
         if t2 != -1:

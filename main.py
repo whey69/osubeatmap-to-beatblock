@@ -24,7 +24,7 @@ except:
 chart = parser.parse(file)
 
 # convert
-bchart = converter.converter(chart).convert()
+bchart = converter.convert(chart)
 
 # write
 writer.write(bchart, chart)

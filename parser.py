@@ -76,6 +76,9 @@ def parse(file):
                             hitobject["tap"] = false
                     else:
                         hitobject["tap"] = false
+                if hitobject["type"] == 12:
+                    # TODO: handle drum rolls
+                    1 == 1
                 hitobject["hitSample"] = data[5].split(":")[1:]
                 chart["hitobjects"].append(hitobject)
         
