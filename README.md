@@ -1,0 +1,1 @@
+simple python script to convert osu beatmaps to beatblock maps
