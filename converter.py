@@ -29,6 +29,7 @@ def convert(chart):
 
         # holds (mania)
         if val["type"] == 128:
+            print("TODO add a list of ongoing holds, and make it change the end angle based on angle change ok")
             note = {}
             note["type"] = "hold"
             # beatvalue = val["time"] / section["beatLength"]
@@ -47,7 +48,6 @@ def convert(chart):
 
         # holds
         if val["type"] == 2:
-            print("TODO add a list of ongoing holds, and make it change the end angle based on angle change ok")
             for i, p in enumerate(val["points"]):
                 if len(val["points"]) <= i + 1:
                     break
