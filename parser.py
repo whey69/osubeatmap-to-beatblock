@@ -106,7 +106,6 @@ def parse(file):
                 else:
                     chart["general"]["katTap"] = false
                 if chart["general"]["mode"] == "0" or chart["general"]["mode"] == "2":
-                    # TODO: implement catch mode
                     print("your beatmap's mode is unsupported, proceed with caution")
 
     print("finished extracting the beatmap")

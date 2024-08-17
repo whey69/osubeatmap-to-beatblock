@@ -32,7 +32,7 @@ def write(bchart, chart):
             #     continue
             event = {}
             event["type"] = "setBPM"
-            event["time"] = convert_ms_to_beats(i["time"], transitions, chart)
+            event["time"] = convertMsToBeats(i["time"], transitions, chart)
             event["angle"] = 90
             event["bpm"] = i["bpm"]
             level["events"].append(event)
@@ -41,7 +41,7 @@ def write(bchart, chart):
         for c, i in enumerate(chart["approaches"]):
             event = {}
             event["type"] = "ease"
-            event["time"] = convert_ms_to_beats(i["time"], transitions, chart)
+            event["time"] = convertMsToBeats(i["time"], transitions, chart)
             event["angle"] = 270
             event["value"] = i["multiplier"]
             event["var"] = "scrollSpeed"
@@ -49,7 +49,7 @@ def write(bchart, chart):
         
         # end the level
         event = {
-            "time": convert_ms_to_beats(chart["hitobjects"][-1]["time"], transitions, chart) + 1,
+            "time": convertMsToBeats(chart["hitobjects"][-1]["time"], transitions, chart) + 1,
             "type": "showResults",
             "angle": 0
         }
@@ -64,9 +64,12 @@ def write(bchart, chart):
                 "bpm": chart["timing"][0]["bpm"],
                 "file": (chart["general"]["audiofilename"] if chart["general"]["audiofilename"] != None else "")
             }
-            level["events"].append(event)
             if ".mp3" in event["file"]:
                 print("warning: used audio file is very likely to be rejected by the game")
+                inp = input("set the audio file extension to .ogg? youll have to convert the audio manually (y/n): ")
+                if inp.strip() == "y" or inp.strip() == "yes":
+                    event["file"] = event["file"].replace(".mp3", ".ogg")
+            level["events"].append(event)
         except KeyError as e:
             print("no audiofile name found, proceeding without playsong element")
 
