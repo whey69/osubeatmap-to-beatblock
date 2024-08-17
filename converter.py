@@ -59,8 +59,8 @@ def convert(chart):
                     add_angle += random.randint(-10, 10)
 
                 for i in ongoingholds:
-                    if i["time"] <= note["time"]:
-                        i["angle2"] = (angle * angle_multiplier) + add_angle
+                    if i["time"] + i["duration"] <= note["time"]:
+                        i["angle2"] = ((val["x"] / 128) * angle_multiplier) + add_angle
                         bchart.append(i) 
                         try:
                             ongoingholds.remove(i)

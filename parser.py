@@ -15,6 +15,7 @@ def parse(file):
             section = "timing"
             chart["timing"] = []
             chart["approaches"] = []
+            chart["kiais"] = []
         if (line == ""):
             if (section == "hit"):
                 break # we read all of the useful info
@@ -52,6 +53,8 @@ def parse(file):
                     timingpoint["multiplier"] = timingpoint["beatLength"] * -1 / 100
                     # print(timingpoint["multiplier"])
                     chart["approaches"].append(timingpoint)
+                if timingpoint["effects"] & 0x00000001 == 0x00000001: # i should probably go around the code and include these in
+                    chart["kiais"].append(timingpoint)
         
         if section == "hit":
             # parse hit objects
