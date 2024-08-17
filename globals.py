@@ -8,7 +8,7 @@ def getSection(time, chart):
             b = i
     return b
 
-def convert_ms_to_beats(ms, transitions, chart):
+def convertMsToBeats(ms, transitions, chart):
     total_beats = 0
     reached_end = false
 

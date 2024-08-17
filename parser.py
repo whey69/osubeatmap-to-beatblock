@@ -60,8 +60,8 @@ def parse(file):
             if len(data) > 1:
                 #https://osu.ppy.sh/wiki/en/Client/File_formats/osu_(file_format)#hit-objects
                 hitobject = {}
-                hitobject["x"] = int(data[0])
-                hitobject["y"] = int(data[1])
+                hitobject["x"] = float(data[0])
+                hitobject["y"] = float(data[1])
                 hitobject["time"] = float(data[2])
                 hitobject["type"] = int(data[3])
                 hitobject["hitSound"] = int(data[4])
@@ -78,7 +78,13 @@ def parse(file):
                         hitobject["tap"] = false
                 if hitobject["type"] == 12:
                     # TODO: handle drum rolls
-                    1 == 1
+                    print("TODO hitobject handler in parser")
+                if hitobject["type"] == 2:
+                    hitobject["points"] = handleSliders(line)
+                    hitobject["endTime"] = float(hitobject["points"][-1]["y"]) # assume that y is the point time
+                if hitobject["type"] == 5:
+                    # afaik its the same as 1
+                    hitobject["type"] = 1
                 hitobject["hitSample"] = data[5].split(":")[1:]
                 chart["hitobjects"].append(hitobject)
         
@@ -105,9 +111,29 @@ def parse(file):
                         chart["general"]["katTap"] = false
                 else:
                     chart["general"]["katTap"] = false
-                if chart["general"]["mode"] == "0" or chart["general"]["mode"] == "2":
-                    # TODO: implement catch mode
+                if chart["general"]["mode"] == "0":
                     print("your beatmap's mode is unsupported, proceed with caution")
 
     print("finished extracting the beatmap")
     return chart
+
+def handleSliders(line):
+    """
+    handle sliders, duh
+    """
+    
+    data = line.split(",")
+    t = data[5]
+    data = t.split("|")
+    points = []
+    for i in data:
+        if len(i) <= 3:
+            # ignore the curvetype and invalid data
+            continue
+        point = {}
+        t2 = i.split(":")
+        point["x"] = t2[0]
+        point["y"] = t2[1]
+        points.append(point)
+
+    return points
