@@ -36,16 +36,17 @@ def parse(file):
             
             if len(data) > 1: 
                 # https://osu.ppy.sh/wiki/en/Client/File_formats/osu_(file_format)#timing-points
-                timingpoint = {}
-                timingpoint["time"] = float(data[0]) # this is supposed to be an int apparently
-                timingpoint["beatLength"] = float(data[1])
-                timingpoint["meter"] = int(data[2])
-                timingpoint["sampleSet"] = int(data[3])
-                timingpoint["sampleIndex"] = int(data[4])
-                timingpoint["volume"] = int(data[5])
-                timingpoint["uninherited"] = int(data[6])
-                timingpoint["effects"] = int(data[7])
-                timingpoint["bpm"] = round(1 / float(data[1]) * 1000 * 60) # not in docs btw
+                timingpoint = {
+                    "time": float(data[0]), # this is supposed to be an int apparently
+                    "beatLength": float(data[1]),
+                    "meter": int(data[2]),
+                    "sampleSet": int(data[3]),
+                    "sampleIndex": int(data[4]),
+                    "volume": int(data[5]),
+                    "uninherited": int(data[6]),
+                    "effects": int(data[7]),
+                    "bpm": round(1 / float(data[1]) * 1000 * 60) # not in docs btw
+                }
                 if timingpoint["uninherited"] == 1: # store slider multipliers separately
                     chart["timing"].append(timingpoint)
                 elif timingpoint["beatLength"] < 0:
@@ -62,12 +63,14 @@ def parse(file):
 
             if len(data) > 1:
                 #https://osu.ppy.sh/wiki/en/Client/File_formats/osu_(file_format)#hit-objects
-                hitobject = {}
-                hitobject["x"] = int(data[0])
-                hitobject["y"] = int(data[1])
-                hitobject["time"] = float(data[2])
-                hitobject["type"] = int(data[3])
-                hitobject["hitSound"] = int(data[4])
+                hitobject = {
+                    "x": int(data[0]),
+                    "y": int(data[1]),
+                    "time": float(data[2]),
+                    "type": float(data[3]),
+                    "hitSound": int(data[4]),
+                    "hitSample": data[5].split(":")[1:]
+                }
                 if hitobject["type"] == 128:
                     hitobject["endTime"] = float(data[5].split(":")[0]) - 10 # move the end a little bit so that there is time to jump to note far away
                 else:
@@ -82,7 +85,6 @@ def parse(file):
                 if hitobject["type"] == 12:
                     # TODO: handle drum rolls
                     1 == 1
-                hitobject["hitSample"] = data[5].split(":")[1:]
                 chart["hitobjects"].append(hitobject)
         
         if section == "metadata":

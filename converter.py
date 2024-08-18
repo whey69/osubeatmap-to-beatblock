@@ -18,35 +18,32 @@ def convert(chart):
         note = None
         # blocks
         if val["type"] == 1:
-            note = {}
-            note["type"] = "block"
             # calculate approximate location (likely inaccurate if bpm changes)
-            # beatvalue = val["time"] / section["beatLength"]
             beatvalue = convertMsToBeats(val["time"], transitions, chart)
-            note["time"] = beatvalue
-            angle = val["x"] / 128
-            note["angle"] = (angle * angle_multiplier) + add_angle + (random.randint(-taiko_multiplier, taiko_multiplier) if val["tap"] else 0)
-            note["tap"] = val["tap"]
+            angle = (val["x"] / 128) * angle_multiplier + add_angle 
+            note = {
+                "type": "block",
+                "time": beatvalue,
+                "angle": angle + (random.randint(-taiko_multiplier, taiko_multiplier) if val["tap"] else 0),
+                "tap": val["tap"]
+            }
 
         # holds
         if val["type"] == 128:
-            note = {}
-            note["type"] = "hold"
-            # beatvalue = val["time"] / section["beatLength"]
-            # note["time"] = beatvalue
-            # beatvalue2 = (val["endTime"] / section["beatLength"]) - beatvalue
-            # note["duration"] = beatvalue2
-            beatvalue = convertMsToBeats(val["time"], transitions, chart)
-            note["time"] = beatvalue
+            beatvalue = convertMsToBeats(val["time"], transitions, chart)   
             beatvalue2 = abs(convertMsToBeats(val["endTime"], transitions, chart) - beatvalue)
             if beatvalue2 - beatvalue == 0:
                 continue # prevent sliders at the end which pop up for some reason every now and then
-            note["duration"] = beatvalue2
             angle = val["x"] / 128
-            note["angle"] = (angle * angle_multiplier) + add_angle
-            note["angle2"] = (angle * angle_multiplier) + add_angle
-            note["segments"] = 1
-            note["x"] = val["x"] # hopefully beatblock doesnt mind some extra properties
+            note = {
+                "type": "hold",
+                "time": beatvalue,
+                "duration": beatvalue2,
+                "angle": (angle * angle_multiplier) + add_angle,
+                "angle2": (angle * angle_multiplier) + add_angle,
+                "segments": 1,
+                "x": val["x"]
+            }
             ongoingholds.append(note)
 
         if note:
