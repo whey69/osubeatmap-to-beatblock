@@ -45,6 +45,8 @@ def convert(chart):
             angle = val["x"] / 128
             note["angle"] = (angle * angle_multiplier) + add_angle
             note["angle2"] = (angle * angle_multiplier) + add_angle
+            note["segments"] = 1
+            note["x"] = val["x"] # hopefully beatblock doesnt mind some extra properties
             ongoingholds.append(note)
 
         if note:
@@ -58,12 +60,14 @@ def convert(chart):
                     # add random offset to make taiko maps less boring
                     add_angle += random.randint(-10, 10)
 
-                for i in ongoingholds:
-                    if i["time"] + i["duration"] <= note["time"]:
-                        i["angle2"] = ((val["x"] / 128) * angle_multiplier) + add_angle
-                        bchart.append(i) 
-                        try:
-                            ongoingholds.remove(i)
-                        except:
-                            pass
+            for i in ongoingholds:
+                if i["time"] + i["duration"] <= note["time"]:
+                    i["angle2"] = ((i["x"] / 128) * angle_multiplier) + add_angle 
+                    if i["angle"] != ((i["x"] / 128) * angle_multiplier) + add_angle:
+                        i["segments"] = 30 # idk what the default is
+                    bchart.append(i) 
+                    try:
+                        ongoingholds.remove(i)
+                    except:
+                        pass
     return bchart
