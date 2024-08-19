@@ -1,0 +1,13 @@
+{
+    "add_angle_min": -180,
+    "add_angle_max": 180,
+
+    "angle_multiplier": 2,
+    "taiko_multiplier": 10,
+
+    "switch_position_every_min": 5,
+    "switch_position_every_max": 15,
+
+    "jump_distance_min": -45,
+    "jump_distance_max": 45
+}
