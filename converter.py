@@ -32,8 +32,6 @@ def convert(chart):
         if val["type"] == 128:
             beatvalue = convertMsToBeats(val["time"], transitions, chart)   
             beatvalue2 = abs(convertMsToBeats(val["endTime"], transitions, chart) - beatvalue)
-            if beatvalue2 - beatvalue == 0:
-                continue # prevent sliders at the end which pop up for some reason every now and then
             angle = val["x"] / 128
             note = {
                 "type": "hold",
@@ -44,6 +42,8 @@ def convert(chart):
                 "segments": 1,
                 "x": val["x"]
             }
+            if note["duration"] == 0:
+                continue # prevent "empty" notes at the end
             ongoingholds.append(note)
 
         if note:
