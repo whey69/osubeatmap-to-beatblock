@@ -66,7 +66,7 @@ def write(bchart, chart):
             }
             if ".mp3" in event["file"]:
                 print("warning: used audio file is very likely to be rejected by the game")
-                inp = input("set the audio file extension to .ogg? youll have to convert the audio manually (y/n): ")
+                inp = input("set the audio file extension to .ogg? youll have to convert the audio manually (y/N): ")
                 if inp.strip() == "y" or inp.strip() == "yes":
                     event["file"] = event["file"].replace(".mp3", ".ogg")
             level["events"].append(event)

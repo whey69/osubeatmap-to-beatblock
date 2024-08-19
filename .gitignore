@@ -5,3 +5,5 @@
 
 # vs code
 /.vscode
+
+/config.json

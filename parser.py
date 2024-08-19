@@ -45,7 +45,7 @@ def parse(file):
                     "volume": int(data[5]),
                     "uninherited": int(data[6]),
                     "effects": int(data[7]),
-                    "bpm": round(1 / float(data[1]) * 1000 * 60) # not in docs btw
+                    "bpm": 1 / float(data[1]) * 1000 * 60 # not in docs btw
                 }
                 if timingpoint["uninherited"] == 1: # store slider multipliers separately
                     chart["timing"].append(timingpoint)

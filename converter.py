@@ -9,9 +9,9 @@ def convert(chart):
     """
     transitions = getTransitions(chart)
     add_angle = (random.randint(-180, 180) if chart["general"]["mode"] != "2" else 0)
-    angle_multiplier = 2
-    taiko_multiplier = 10 # slightly random position of taiko big notes
-    rng_counter = 0
+    angle_multiplier = config["angle_multiplier"]
+    taiko_multiplier = config["taiko_multiplier"] # slightly random position of taiko big notes
+    rng_counter = -random.randint(config["switch_position_every_min"], config["switch_position_every_max"])
     ongoingholds = []
     bchart = []
     for i, val in enumerate(chart["hitobjects"]):
@@ -50,9 +50,9 @@ def convert(chart):
             if note["type"] != "hold":
                 bchart.append(note)
                 rng_counter += 1
-                if rng_counter >= 10:
-                    add_angle += random.randint(-45, 45)
-                    rng_counter = 0
+                if rng_counter >= 0:
+                    add_angle += random.randint(config["jump_distance_min"], config["jump_distance_max"])
+                    rng_counter = -random.randint(config["switch_position_every_min"], config["switch_position_every_max"]) # we do a bit of trolling
                 if chart["general"]["mode"] == "1":
                     # add random offset to make taiko maps less boring
                     add_angle += random.randint(-10, 10)

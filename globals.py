@@ -1,5 +1,29 @@
+import json
+import os
+
 true = True
 false = False
+
+config = None
+if not os.path.isfile("config.json"):
+    print("couldnt find config.json, make sure to rename \"default_config.json\" to just \"config.json\".")
+    exit()
+else:
+    with open("config.json", "r") as f:
+        try:
+            config = json.loads(f.read())
+        except:
+            print("couldnt load config.json. using defaults")
+            config = {
+                "add_angle_min": -180, 
+                "add_angle_max": 180, 
+                "angle_multiplier": 2, 
+                "taiko_multiplier": 10, 
+                "switch_position_every_min": 5, 
+                "switch_position_every_max": 15,
+                "jump_distance_min": -45,
+                "jump_distance_max": 45
+            }
 
 def getSection(time, chart):
     b = chart["timing"][0]
