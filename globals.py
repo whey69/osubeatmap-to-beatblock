@@ -21,6 +21,7 @@ else:
                 "taiko_multiplier": 10, 
                 "switch_position_every_min": 5, 
                 "switch_position_every_max": 15,
+                "switch_slider_once_every": 5,
                 "jump_distance_min": -45,
                 "jump_distance_max": 45
             }
