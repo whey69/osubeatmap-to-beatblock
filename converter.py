@@ -49,13 +49,13 @@ def convert(chart):
         if note:
             if note["type"] != "hold":
                 bchart.append(note)
-                rng_counter += 1
-                if rng_counter >= 0:
-                    add_angle += random.randint(config["jump_distance_min"], config["jump_distance_max"])
-                    rng_counter = -random.randint(config["switch_position_every_min"], config["switch_position_every_max"]) # we do a bit of trolling
-                if chart["general"]["mode"] == "1":
-                    # add random offset to make taiko maps less boring
-                    add_angle += random.randint(-10, 10)
+            rng_counter += 1
+            if rng_counter >= 0:
+                add_angle += random.randint(config["jump_distance_min"], config["jump_distance_max"])
+                rng_counter = -random.randint(config["switch_position_every_min"], config["switch_position_every_max"]) # we do a bit of trolling
+            if chart["general"]["mode"] == "1":
+                # add random offset to make taiko maps less boring
+                add_angle += random.randint(-10, 10)
 
             for i in ongoingholds:
                 if i["time"] + i["duration"] <= note["time"]:
