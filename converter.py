@@ -51,7 +51,7 @@ def convert(chart):
             if note["duration"] == 0:
                 note["type"] = "block" # thats it (hopefully)
             if note["spinner"] == false:
-                ongoingholds.append(note) # if you have notes in your spinner then you are a disgrace to the human race a dissapointment to your family and all of the people around you and a bad person in general, i hope you have a "nice" day
+                ongoingholds.append(note)
 
         if note:
             if note["type"] != "hold":
