@@ -33,7 +33,7 @@ def getSection(time, chart):
             b = i
     return b
 
-def convertMsToBeats(ms, transitions, chart):
+def convertMsToBeats(ms, transitions, chart, endTime=None, end=false):
     total_beats = 0
     reached_end = false
 
@@ -46,11 +46,28 @@ def convertMsToBeats(ms, transitions, chart):
             if transitions[c+1]["time"] > ms:
                 t2 = ms
                 reached_end = true
+        
         # there are no more timing points left, use the end note as a timing
-        if c >= len(transitions) - 1:
+        if end:
+            if c >= len(transitions) - 1:
+                # im going insanse
+                try:
+                    t2 = chart["hitobjects"][-1]["endTime"]
+                    if chart["hitobjects"][-1]["endTime"] > ms:
+                        t2 = ms
+                except Exception as e:
+                    t2 = chart["hitobjects"][-1]["time"]
+                    if chart["hitobjects"][-1]["time"] > ms:
+                        t2 = ms
+        else:
             t2 = chart["hitobjects"][-1]["time"]
             if chart["hitobjects"][-1]["time"] > ms:
                 t2 = ms
+
+
+        # use provided endtime as a timing
+        if endTime != None:
+            t2 = endTime
         
         if t2 != -1:
             time = abs(transitions[c]["time"] - t2)

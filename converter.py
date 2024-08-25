@@ -17,7 +17,7 @@ def convert(chart):
     for i, val in enumerate(chart["hitobjects"]):
         note = None
         # blocks
-        if val["type"] == 1:
+        if val["type"] & 0b1 == 0b1:
             # calculate approximate location (likely inaccurate if bpm changes)
             beatvalue = convertMsToBeats(val["time"], transitions, chart)
             angle = (val["x"] / 128) * angle_multiplier + add_angle 
@@ -25,13 +25,17 @@ def convert(chart):
                 "type": "block",
                 "time": beatvalue,
                 "angle": angle + (random.randint(-taiko_multiplier, taiko_multiplier) if val["tap"] else 0),
-                "tap": val["tap"]
+                "tap": val["tap"],
+                "spinner": false # please dont do this
             }
 
-        # holds
-        if val["type"] == 128:
+        # holds and spinners (theyre the same)
+        if val["type"] & 0b10000000 == 0b10000000 or val["type"] & 0b00000010 == 0b10 or val["type"] & 0b00001000 == 0b1000:
             beatvalue = convertMsToBeats(val["time"], transitions, chart)   
             beatvalue2 = abs(convertMsToBeats(val["endTime"], transitions, chart) - beatvalue)
+            if beatvalue2 == 0:
+                # try harder
+                beatvalue2 = abs(convertMsToBeats(val["endTime"], transitions, chart, val["endTime"] + 10) - beatvalue)
             angle = val["x"] / 128
             note = {
                 "type": "hold",
@@ -40,11 +44,14 @@ def convert(chart):
                 "angle": (angle * angle_multiplier) + add_angle,
                 "angle2": (angle * angle_multiplier) + add_angle,
                 "segments": 1,
-                "x": val["x"]
+                "x": val["x"],
+                "spinner": val["type"] & 0b00001000 == 0b1000,
+                "debug": "yes"
             }
             if note["duration"] == 0:
-                continue # prevent "empty" notes at the end
-            ongoingholds.append(note)
+                note["type"] = "block" # thats it (hopefully)
+            if note["spinner"] == false:
+                ongoingholds.append(note) # if you have notes in your spinner then you are a disgrace to the human race a dissapointment to your family and all of the people around you and a bad person in general, i hope you have a "nice" day
 
         if note:
             if note["type"] != "hold":
@@ -56,6 +63,9 @@ def convert(chart):
                 if chart["general"]["mode"] == "1":
                     # add random offset to make taiko maps less boring
                     add_angle += random.randint(-10, 10)
+
+            if note["spinner"] == true:
+                bchart.append(note) 
 
             for i in ongoingholds:
                 if i["time"] + i["duration"] <= note["time"]:

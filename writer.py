@@ -48,8 +48,12 @@ def write(bchart, chart):
             level["events"].append(event)
         
         # end the level
+        try:
+            time = convertMsToBeats(chart["hitobjects"][-1]["time"] + chart["hitobjects"][-1]["endTime"], transitions, chart, end=true) + 1
+        except Exception as e:
+            time = convertMsToBeats(chart["hitobjects"][-1]["time"], transitions, chart) + 1
         event = {
-            "time": convertMsToBeats(chart["hitobjects"][-1]["time"], transitions, chart) + 1,
+            "time": time,
             "type": "showResults",
             "angle": 0
         }

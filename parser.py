@@ -67,24 +67,27 @@ def parse(file):
                     "x": int(data[0]),
                     "y": int(data[1]),
                     "time": float(data[2]),
-                    "type": float(data[3]),
+                    "type": int(data[3]),
                     "hitSound": int(data[4]),
                     "hitSample": data[5].split(":")[1:]
                 }
-                if hitobject["type"] == 128:
+                if hitobject["type"] & 0b10000000 == 0b10000000:
                     hitobject["endTime"] = float(data[5].split(":")[0]) - 10 # move the end a little bit so that there is time to jump to note far away
                 else:
                     hitobject["endTime"] = data[5].split(":")[0] # theres probably a better way to handle this 
                     if chart["general"]["mode"] == "1":
-                        if hitobject["hitSound"] == 4 or hitobject["hitSound"] == 12 or (hitobject["hitSound"] == 2 and chart["general"]["katTap"] == true):
+                        if hitobject["hitSound"] == 4 or hitobject["hitSound"] == 12 or (hitobject["hitSound"] == 2 or hitobject["hitSound"] == 8 and chart["general"]["katTap"] == true):
                             hitobject["tap"] = true
                         else:
                             hitobject["tap"] = false
                     else:
                         hitobject["tap"] = false
-                if hitobject["type"] == 12:
-                    # TODO: handle drum rolls
-                    1 == 1
+                if chart["general"]["mode"] == "1":
+                    if hitobject["type"] & 0b00000010 == 0b10:
+                        hitobject["endTime"] = float(data[7])
+                    if hitobject["type"] & 0b00001000 == 0b1000:
+                        hitobject["endTime"] = float(data[5])
+                        hitobject["hitSample"] = data[6].split(":")[1:]
                 chart["hitobjects"].append(hitobject)
         
         if section == "metadata":
@@ -104,7 +107,7 @@ def parse(file):
                 chart["general"]["mode"] = line.removeprefix("Mode:").strip()
                 if chart["general"]["mode"] == "1":
                     ask = input("your beatmap is osu!taiko. make every kat a tap block? (y/N): ")
-                    if ask.lower() == "yes" or ask.lower() == "y":
+                    if ask.lower().strip() == "yes" or ask.lower().strip() == "y":
                         chart["general"]["katTap"] = true
                     else:
                         chart["general"]["katTap"] = false
