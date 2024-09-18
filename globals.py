@@ -6,7 +6,7 @@ false = False
 
 config = None
 if not os.path.isfile("config.json"):
-    print("couldnt find config.json, make sure to rename \"default_config.json\" to just \"config.json\".")
+    print("couldnt find config.json, make sure to rename \"example_config.json\" to just \"config.json\".")
     exit()
 else:
     with open("config.json", "r") as f:
